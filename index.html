@@ -147,7 +147,7 @@
             <!-- RIGHT COLUMN: Output & Graphs -->
             <section class="lg:col-span-7 flex flex-col gap-6">
                 
-                <!-- Result Box -->
+                <!-- TOP: Result Box -->
                 <div id="resultCard" class="glass-panel p-6 rounded-2xl border border-slate-700/50 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div class="flex-1 space-y-3 text-center md:text-left">
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase bg-slate-800 text-slate-300 border border-slate-700" id="badgeContainer">
@@ -169,26 +169,31 @@
                     </div>
                 </div>
 
-                <!-- CHART 1: Feature Importance Analysis -->
-                <div class="glass-panel p-6 rounded-2xl border border-slate-700/50 flex flex-col">
-                    <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-column text-cyan-400"></i> Random Forest Feature Importance Analysis
-                    </h3>
-                    <p class="text-xs text-slate-400 mb-4">Feature weights computed from model decision split nodes.</p>
-                    <div class="relative w-full h-52">
-                        <canvas id="importanceChart"></canvas>
+                <!-- BOTTOM: Grid housing both charts side-by-side -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- CHART 1: Feature Importance Analysis -->
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-700/50 flex flex-col">
+                        <h3 class="text-xs font-bold text-white mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-column text-cyan-400"></i> Feature Importance
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mb-3">Model decision split weights.</p>
+                        <div class="relative w-full h-52">
+                            <canvas id="importanceChart"></canvas>
+                        </div>
                     </div>
-                </div>
 
-                <!-- CHART 2: Live Lifestyle Radar Profile -->
-                <div class="glass-panel p-6 rounded-2xl border border-slate-700/50 flex flex-col">
-                    <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-radar text-cyan-400"></i> Student Lifestyle Multi-Dimensional Profile
-                    </h3>
-                    <p class="text-xs text-slate-400 mb-4">Real-time footprint comparing input parameters to a healthy baseline.</p>
-                    <div class="relative w-full h-56">
-                        <canvas id="radarChart"></canvas>
+                    <!-- CHART 2: Live Lifestyle Radar Profile -->
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-700/50 flex flex-col">
+                        <h3 class="text-xs font-bold text-white mb-1 flex items-center gap-2">
+                            <i class="fa-solid fa-radar text-cyan-400"></i> Lifestyle Footprint
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mb-3">Input metrics vs healthy baseline.</p>
+                        <div class="relative w-full h-52">
+                            <canvas id="radarChart"></canvas>
+                        </div>
                     </div>
+
                 </div>
 
             </section>
@@ -223,169 +228,9 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                        y: { grid: { display: false }, ticks: { color: '#e2e8f0' } }
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+                        y: { grid: { display: false }, ticks: { color: '#e2e8f0', font: { size: 10 } } }
                     }
                 }
             });
         }
-
-        function initRadarChart() {
-            const ctx = document.getElementById('radarChart').getContext('2d');
-            
-            const academicPressure = parseFloat(document.getElementById('pressure').value);
-            const financialStress = parseFloat(document.getElementById('stress').value);
-            const workHours = parseFloat(document.getElementById('hours').value);
-            const sleepVal = parseInt(document.getElementById('sleep').value);
-            const sleepRisk = sleepVal === 0 ? 5 : sleepVal === 1 ? 3 : 1;
-            const cgpaVal = parseFloat(document.getElementById('cgpa').value);
-            const cgpaBurden = (10 - cgpaVal);
-
-            radarChartInstance = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Academic Pressure', 'Financial Stress', 'Work Hours', 'Sleep Deficit', 'CGPA Burden'],
-                    datasets: [{
-                        label: 'Current Input Profile',
-                        data: [academicPressure, financialStress, workHours / 2.5, sleepRisk, cgpaBurden],
-                        backgroundColor: 'rgba(99, 102, 241, 0.25)',
-                        borderColor: '#6366f1',
-                        pointBackgroundColor: '#38bdf8',
-                        borderWidth: 2
-                    }, {
-                        label: 'Optimal Healthy Baseline',
-                        data: [2, 1, 2.5, 1, 1.5],
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        borderColor: '#10b981',
-                        pointBackgroundColor: '#10b981',
-                        borderWidth: 1.5,
-                        borderDash: [4, 4]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#94a3b8', font: { size: 10 } } }
-                    },
-                    scales: {
-                        r: {
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                            ticks: { display: false, max: 5, min: 0 }
-                        }
-                    }
-                }
-            });
-        }
-
-        function updateRadarChart() {
-            if (!radarChartInstance) return;
-
-            const academicPressure = parseFloat(document.getElementById('pressure').value);
-            const financialStress = parseFloat(document.getElementById('stress').value);
-            const workHours = parseFloat(document.getElementById('hours').value);
-            const sleepVal = parseInt(document.getElementById('sleep').value);
-            const sleepRisk = sleepVal === 0 ? 5 : sleepVal === 1 ? 3 : 1;
-            const cgpaVal = parseFloat(document.getElementById('cgpa').value);
-            const cgpaBurden = (10 - cgpaVal);
-
-            radarChartInstance.data.datasets[0].data = [academicPressure, financialStress, workHours / 2.5, sleepRisk, cgpaBurden];
-            radarChartInstance.update();
-        }
-
-        async function submitPrediction() {
-            const btn = document.getElementById('submitBtn');
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Calculating...`;
-            btn.disabled = true;
-
-            const payload = {
-                gender: parseInt(document.getElementById('gender').value),
-                age: parseInt(document.getElementById('age').value),
-                academic_pressure: parseFloat(document.getElementById('pressure').value),
-                cgpa: parseFloat(document.getElementById('cgpa').value),
-                study_satisfaction: 3.0,
-                sleep_duration: parseInt(document.getElementById('sleep').value),
-                dietary_habits: parseInt(document.getElementById('diet').value),
-                work_study_hours: parseFloat(document.getElementById('hours').value),
-                financial_stress: parseInt(document.getElementById('stress').value)
-            };
-
-            let result;
-
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 4000);
-
-                const response = await fetch('https://student-depression-predictor-vtv0.onrender.com/predict', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                    signal: controller.signal
-                });
-                clearTimeout(timeoutId);
-
-                if (!response.ok) throw new Error("API error");
-                result = await response.json();
-            } catch (err) {
-                console.log("Using instant local model calculation fallback.");
-                result = computeLocalPrediction(payload);
-            }
-
-            updateResultUI(result);
-            btn.innerHTML = `<i class="fa-solid fa-calculator"></i> Run Prediction`;
-            btn.disabled = false;
-        }
-
-        function computeLocalPrediction(p) {
-            let score = 0;
-            score += (p.academic_pressure / 5) * 0.4;
-            score += (p.financial_stress / 5) * 0.3;
-            if (p.sleep_duration === 0) score += 0.3;
-            else if (p.sleep_duration === 1) score += 0.15;
-            
-            const prob = Math.min(Math.max(score, 0.05), 0.95);
-            return {
-                prediction: prob >= 0.45 ? 1 : 0,
-                probability: prob
-            };
-        }
-
-        function updateResultUI(res) {
-            const probPct = Math.round(res.probability * 100);
-            const isHigh = res.prediction === 1;
-
-            const circle = document.getElementById('progressCircle');
-            const circumference = 2 * Math.PI * 52;
-            const offset = circumference - (probPct / 100) * circumference;
-            circle.style.strokeDashoffset = offset;
-
-            const card = document.getElementById('resultCard');
-            const badgeContainer = document.getElementById('badgeContainer');
-            const resultDot = document.getElementById('resultDot');
-            
-            if (isHigh) {
-                circle.setAttribute('class', 'progress-ring__circle text-red-500 transition-all duration-700');
-                card.className = "glass-panel p-6 rounded-2xl border border-red-500/30 glow-red flex flex-col md:flex-row items-center justify-between gap-6";
-                badgeContainer.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase bg-red-500/20 text-red-300 border border-red-500/40";
-                resultDot.className = "w-2 h-2 rounded-full bg-red-400";
-                
-                document.getElementById('riskBadgeText').innerText = "Potential High Risk Flagged";
-                document.getElementById('resultTitle').innerText = "Elevated Stress Indicators";
-                document.getElementById('resultDescription').innerText = "Model prediction indicates a higher probability of distress driven by pressure and sleep habits.";
-            } else {
-                circle.setAttribute('class', 'progress-ring__circle text-emerald-400 transition-all duration-700');
-                card.className = "glass-panel p-6 rounded-2xl border border-emerald-500/30 glow-green flex flex-col md:flex-row items-center justify-between gap-6";
-                badgeContainer.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
-                resultDot.className = "w-2 h-2 rounded-full bg-emerald-400";
-                
-                document.getElementById('riskBadgeText').innerText = "Low Risk Profile";
-                document.getElementById('resultTitle').innerText = "Optimal Wellbeing Balance";
-                document.getElementById('resultDescription').innerText = "Metrics reflect a resilient baseline profile with balanced stress and healthy habits.";
-            }
-
-            document.getElementById('probPercent').innerText = probPct + "%";
-        }
-    </script>
-</body>
-</html>
