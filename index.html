@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Mental Health & Depression Risk Predictor</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -37,16 +37,15 @@
         input[type=range] {
             -webkit-appearance: none;
             background: #334155;
-            height: 8px;
-            border-radius: 4px;
+            height: 6px;
+            border-radius: 3px;
         }
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            height: 22px; width: 22px;
+            height: 18px; width: 18px;
             border-radius: 50%;
             background: #38bdf8;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
         }
         .progress-ring__circle {
             transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -55,35 +54,35 @@
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen font-sans antialiased selection:bg-cyan-500 selection:text-white">
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans antialiased">
 
     <!-- Header -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800 px-4 sm:px-6 py-3.5">
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shrink-0">
-                    <i class="fa-solid fa-chart-line text-lg sm:text-xl"></i>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-lg">
+                    <i class="fa-solid fa-chart-line text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base sm:text-xl tracking-tight text-white leading-tight">Student Mental Health <span class="text-cyan-400 font-normal">Predictor</span></h1>
-                    <p class="text-[10px] sm:text-xs text-slate-400">Data Science & Machine Learning Analytics</p>
+                    <h1 class="font-bold text-xl tracking-tight text-white">Student Mental Health <span class="text-cyan-400 font-normal">Predictor</span></h1>
+                    <p class="text-xs text-slate-400">Data Science & Machine Learning Analytics</p>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             <!-- LEFT COLUMN: Form -->
             <section class="lg:col-span-5 flex flex-col gap-6">
-                <div class="glass-panel p-4 sm:p-6 rounded-2xl border border-slate-700/50">
-                    <h2 class="text-base sm:text-lg font-semibold text-white flex items-center gap-2 mb-4">
+                <div class="glass-panel p-6 rounded-2xl border border-slate-700/50">
+                    <h2 class="text-lg font-semibold text-white flex items-center gap-2 mb-4">
                         <i class="fa-solid fa-sliders text-cyan-400"></i> Predictor Input Parameters
                     </h2>
 
-                    <form id="predictionForm" onsubmit="event.preventDefault(); submitPrediction();" class="space-y-4 sm:space-y-5">
+                    <form id="predictionForm" onsubmit="event.preventDefault(); submitPrediction();" class="space-y-5">
                         
                         <!-- CGPA -->
                         <div class="space-y-1">
@@ -91,7 +90,7 @@
                                 <span>CGPA Score</span>
                                 <span id="cgpaVal" class="text-cyan-400 font-bold">7.5</span>
                             </div>
-                            <input type="range" id="cgpa" min="0" max="10" step="0.1" value="7.5" oninput="document.getElementById('cgpaVal').innerText = parseFloat(this.value).toFixed(1); updateRadarChart();" class="w-full touch-none">
+                            <input type="range" id="cgpa" min="0" max="10" step="0.1" value="7.5" oninput="document.getElementById('cgpaVal').innerText = parseFloat(this.value).toFixed(1); updateRadarChart();" class="w-full">
                         </div>
 
                         <!-- Academic Pressure -->
@@ -100,13 +99,13 @@
                                 <span>Academic Pressure</span>
                                 <span id="pressureVal" class="text-cyan-400 font-bold">3 / 5</span>
                             </div>
-                            <input type="range" id="pressure" min="1" max="5" step="1" value="3" oninput="document.getElementById('pressureVal').innerText = this.value + ' / 5'; updateRadarChart();" class="w-full touch-none">
+                            <input type="range" id="pressure" min="1" max="5" step="1" value="3" oninput="document.getElementById('pressureVal').innerText = this.value + ' / 5'; updateRadarChart();" class="w-full">
                         </div>
 
                         <!-- Sleep Duration -->
                         <div class="space-y-1">
                             <label class="block text-xs font-medium text-slate-300">Sleep Duration</label>
-                            <select id="sleep" onchange="updateRadarChart();" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="sleep" onchange="updateRadarChart();" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-slate-200">
                                 <option value="0">Less than 5 hours (Critical Deficit)</option>
                                 <option value="1" selected>5 - 6 hours (Mild Deficit)</option>
                                 <option value="2">7 - 8 hours (Healthy Optimal)</option>
@@ -120,7 +119,7 @@
                                 <span>Financial Stress</span>
                                 <span id="stressVal" class="text-cyan-400 font-bold">2 / 5</span>
                             </div>
-                            <input type="range" id="stress" min="1" max="5" step="1" value="2" oninput="document.getElementById('stressVal').innerText = this.value + ' / 5'; updateRadarChart();" class="w-full touch-none">
+                            <input type="range" id="stress" min="1" max="5" step="1" value="2" oninput="document.getElementById('stressVal').innerText = this.value + ' / 5'; updateRadarChart();" class="w-full">
                         </div>
 
                         <!-- Work/Study Hours -->
@@ -129,7 +128,7 @@
                                 <span>Daily Work & Study Hours</span>
                                 <span id="hoursVal" class="text-cyan-400 font-bold">6.0 hrs/day</span>
                             </div>
-                            <input type="range" id="hours" min="1" max="16" step="0.5" value="6.0" oninput="document.getElementById('hoursVal').innerText = parseFloat(this.value).toFixed(1) + ' hrs/day'; updateRadarChart();" class="w-full touch-none">
+                            <input type="range" id="hours" min="1" max="16" step="0.5" value="6.0" oninput="document.getElementById('hoursVal').innerText = parseFloat(this.value).toFixed(1) + ' hrs/day'; updateRadarChart();" class="w-full">
                         </div>
 
                         <!-- Hidden defaults for extra fields -->
@@ -138,7 +137,7 @@
                         <input type="hidden" id="diet" value="1">
 
                         <!-- Submit Button -->
-                        <button type="submit" id="submitBtn" class="w-full py-3 px-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 active:scale-[0.98] transition-all shadow-lg flex items-center justify-center gap-2">
+                        <button type="submit" id="submitBtn" class="w-full py-3 px-4 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 transition-all shadow-lg flex items-center justify-center gap-2">
                             <i class="fa-solid fa-calculator"></i> Run Prediction
                         </button>
                     </form>
@@ -149,45 +148,45 @@
             <section class="lg:col-span-7 flex flex-col gap-6">
                 
                 <!-- Result Box -->
-                <div id="resultCard" class="glass-panel p-5 sm:p-6 rounded-2xl border border-slate-700/50 flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6">
-                    <div class="flex-1 space-y-2 sm:space-y-3 text-center sm:text-left">
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase bg-slate-800 text-slate-300 border border-slate-700" id="badgeContainer">
+                <div id="resultCard" class="glass-panel p-6 rounded-2xl border border-slate-700/50 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex-1 space-y-3 text-center md:text-left">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase bg-slate-800 text-slate-300 border border-slate-700" id="badgeContainer">
                             <span class="w-2 h-2 rounded-full bg-slate-400" id="resultDot"></span>
                             <span id="riskBadgeText">Awaiting Computation</span>
                         </div>
-                        <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight" id="resultTitle">Ready for Assessment</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed" id="resultDescription">Click 'Run Prediction' to evaluate student risk against the Random Forest Decision Model.</p>
+                        <h3 class="text-2xl font-bold text-white" id="resultTitle">Ready for Assessment</h3>
+                        <p class="text-xs text-slate-400" id="resultDescription">Click 'Run Prediction' to evaluate student risk against the Random Forest Decision Model.</p>
                     </div>
-                    <div class="relative flex flex-col items-center justify-center shrink-0">
-                        <svg class="w-28 h-28 sm:w-32 sm:h-32">
-                            <circle class="text-slate-800" stroke-width="8" stroke="currentColor" fill="transparent" r="52" cx="56" cy="56" class="sm:cx-64 sm:cy-64"/>
-                            <circle id="progressCircle" class="progress-ring__circle text-indigo-500" stroke-width="8" stroke-dasharray="326.72" stroke-dashoffset="326.72" stroke-linecap="round" stroke="currentColor" fill="transparent" r="52" cx="56" cy="56" class="sm:cx-64 sm:cy-64"/>
+                    <div class="relative flex flex-col items-center justify-center">
+                        <svg class="w-32 h-32">
+                            <circle class="text-slate-800" stroke-width="8" stroke="currentColor" fill="transparent" r="52" cx="64" cy="64"/>
+                            <circle id="progressCircle" class="progress-ring__circle text-indigo-500" stroke-width="8" stroke-dasharray="326.72" stroke-dashoffset="326.72" stroke-linecap="round" stroke="currentColor" fill="transparent" r="52" cx="64" cy="64"/>
                         </svg>
                         <div class="absolute flex flex-col items-center justify-center text-center">
-                            <span class="text-xl sm:text-2xl font-extrabold text-white font-mono" id="probPercent">0%</span>
-                            <span class="text-[9px] sm:text-[10px] text-slate-400 uppercase tracking-wider font-medium">Risk Score</span>
+                            <span class="text-2xl font-extrabold text-white font-mono" id="probPercent">0%</span>
+                            <span class="text-[10px] text-slate-400 uppercase">Risk Score</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- CHART 1: Feature Importance Analysis -->
-                <div class="glass-panel p-4 sm:p-6 rounded-2xl border border-slate-700/50 flex flex-col">
-                    <h3 class="text-xs sm:text-sm font-bold text-white mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-chart-column text-cyan-400"></i> Random Forest Feature Importance
+                <div class="glass-panel p-6 rounded-2xl border border-slate-700/50 flex flex-col">
+                    <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-column text-cyan-400"></i> Random Forest Feature Importance Analysis
                     </h3>
-                    <p class="text-[11px] sm:text-xs text-slate-400 mb-3">Feature weights computed from model decision split nodes.</p>
-                    <div class="relative w-full h-48 sm:h-56">
+                    <p class="text-xs text-slate-400 mb-4">Feature weights computed from model decision split nodes.</p>
+                    <div style="position: relative; width: 100%; height: 220px;">
                         <canvas id="importanceChart"></canvas>
                     </div>
                 </div>
 
                 <!-- CHART 2: Live Lifestyle Radar Profile -->
-                <div class="glass-panel p-4 sm:p-6 rounded-2xl border border-slate-700/50 flex flex-col">
-                    <h3 class="text-xs sm:text-sm font-bold text-white mb-1 flex items-center gap-2">
-                        <i class="fa-solid fa-radar text-cyan-400"></i> Student Lifestyle Footprint
+                <div class="glass-panel p-6 rounded-2xl border border-slate-700/50 flex flex-col">
+                    <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-radar text-cyan-400"></i> Student Lifestyle Multi-Dimensional Profile
                     </h3>
-                    <p class="text-[11px] sm:text-xs text-slate-400 mb-3">Real-time footprint comparing input parameters to a healthy baseline.</p>
-                    <div class="relative w-full h-52 sm:h-60">
+                    <p class="text-xs text-slate-400 mb-4">Real-time footprint comparing input parameters to a healthy baseline.</p>
+                    <div style="position: relative; width: 100%; height: 240px;">
                         <canvas id="radarChart"></canvas>
                     </div>
                 </div>
@@ -201,12 +200,19 @@
         let radarChartInstance = null;
 
         window.onload = function() {
-            initBarChart();
-            initRadarChart();
+            try {
+                initBarChart();
+            } catch(e) { console.error("Bar chart error:", e); }
+
+            try {
+                initRadarChart();
+            } catch(e) { console.error("Radar chart error:", e); }
         };
 
         function initBarChart() {
-            const ctx = document.getElementById('importanceChart').getContext('2d');
+            const canvas = document.getElementById('importanceChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
             barChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -224,15 +230,17 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
-                        y: { grid: { display: false }, ticks: { color: '#e2e8f0', font: { size: 10 } } }
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                        y: { grid: { display: false }, ticks: { color: '#e2e8f0' } }
                     }
                 }
             });
         }
 
         function initRadarChart() {
-            const ctx = document.getElementById('radarChart').getContext('2d');
+            const canvas = document.getElementById('radarChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
             
             const academicPressure = parseFloat(document.getElementById('pressure').value);
             const financialStress = parseFloat(document.getElementById('stress').value);
@@ -245,7 +253,7 @@
             radarChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['Pressure', 'Financial', 'Work Hrs', 'Sleep Deficit', 'CGPA Burden'],
+                    labels: ['Academic Pressure', 'Financial Stress', 'Work Hours', 'Sleep Deficit', 'CGPA Burden'],
                     datasets: [{
                         label: 'Current Input Profile',
                         data: [academicPressure, financialStress, workHours / 2.5, sleepRisk, cgpaBurden],
@@ -273,7 +281,6 @@
                         r: {
                             grid: { color: 'rgba(255, 255, 255, 0.1)' },
                             angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                            pointLabels: { color: '#cbd5e1', font: { size: 10 } },
                             ticks: { display: false, max: 5, min: 0 }
                         }
                     }
@@ -368,8 +375,8 @@
             
             if (isHigh) {
                 circle.setAttribute('class', 'progress-ring__circle text-red-500 transition-all duration-700');
-                card.className = "glass-panel p-5 sm:p-6 rounded-2xl border border-red-500/30 glow-red flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6";
-                badgeContainer.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase bg-red-500/20 text-red-300 border border-red-500/40";
+                card.className = "glass-panel p-6 rounded-2xl border border-red-500/30 glow-red flex flex-col md:flex-row items-center justify-between gap-6";
+                badgeContainer.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase bg-red-500/20 text-red-300 border border-red-500/40";
                 resultDot.className = "w-2 h-2 rounded-full bg-red-400";
                 
                 document.getElementById('riskBadgeText').innerText = "Potential High Risk Flagged";
@@ -377,8 +384,8 @@
                 document.getElementById('resultDescription').innerText = "Model prediction indicates a higher probability of distress driven by pressure and sleep habits.";
             } else {
                 circle.setAttribute('class', 'progress-ring__circle text-emerald-400 transition-all duration-700');
-                card.className = "glass-panel p-5 sm:p-6 rounded-2xl border border-emerald-500/30 glow-green flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6";
-                badgeContainer.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+                card.className = "glass-panel p-6 rounded-2xl border border-emerald-500/30 glow-green flex flex-col md:flex-row items-center justify-between gap-6";
+                badgeContainer.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
                 resultDot.className = "w-2 h-2 rounded-full bg-emerald-400";
                 
                 document.getElementById('riskBadgeText').innerText = "Low Risk Profile";
@@ -387,3 +394,7 @@
             }
 
             document.getElementById('probPercent').innerText = probPct + "%";
+        }
+    </script>
+</body>
+</html>
