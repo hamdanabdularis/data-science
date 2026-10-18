@@ -234,3 +234,106 @@
                 }
             });
         }
+
+        function initRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            const academicPressure = parseFloat(document.getElementById('pressure').value);
+            const financialStress = parseFloat(document.getElementById('stress').value);
+            const workHours = parseFloat(document.getElementById('hours').value);
+            const sleepVal = parseInt(document.getElementById('sleep').value);
+            const sleepRisk = sleepVal === 0 ? 5 : sleepVal === 1 ? 3 : 1;
+            const cgpaVal = parseFloat(document.getElementById('cgpa').value);
+            const cgpaBurden = (10 - cgpaVal);
+
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Pressure', 'Financial', 'Work Hrs', 'Sleep Deficit', 'CGPA Burden'],
+                    datasets: [{
+                        label: 'Current Profile',
+                        data: [academicPressure, financialStress, workHours / 2.5, sleepRisk, cgpaBurden],
+                        backgroundColor: 'rgba(99, 102, 241, 0.25)',
+                        borderColor: '#6366f1',
+                        pointBackgroundColor: '#38bdf8',
+                        borderWidth: 2
+                    }, {
+                        label: 'Healthy Baseline',
+                        data: [2, 1, 2.5, 1, 1.5],
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderColor: '#10b981',
+                        pointBackgroundColor: '#10b981',
+                        borderWidth: 1.5,
+                        borderDash: [4, 4]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { size: 9 } } }
+                    },
+                    scales: {
+                        r: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#cbd5e1', font: { size: 9 } },
+                            ticks: { display: false, max: 5, min: 0 }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateRadarChart() {
+            if (!radarChartInstance) return;
+
+            const academicPressure = parseFloat(document.getElementById('pressure').value);
+            const financialStress = parseFloat(document.getElementById('stress').value);
+            const workHours = parseFloat(document.getElementById('hours').value);
+            const sleepVal = parseInt(document.getElementById('sleep').value);
+            const sleepRisk = sleepVal === 0 ? 5 : sleepVal === 1 ? 3 : 1;
+            const cgpaVal = parseFloat(document.getElementById('cgpa').value);
+            const cgpaBurden = (10 - cgpaVal);
+
+            radarChartInstance.data.datasets[0].data = [academicPressure, financialStress, workHours / 2.5, sleepRisk, cgpaBurden];
+            radarChartInstance.update();
+        }
+
+        async function submitPrediction() {
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Calculating...`;
+            btn.disabled = true;
+
+            const payload = {
+                gender: parseInt(document.getElementById('gender').value),
+                age: parseInt(document.getElementById('age').value),
+                academic_pressure: parseFloat(document.getElementById('pressure').value),
+                cgpa: parseFloat(document.getElementById('cgpa').value),
+                study_satisfaction: 3.0,
+                sleep_duration: parseInt(document.getElementById('sleep').value),
+                dietary_habits: parseInt(document.getElementById('diet').value),
+                work_study_hours: parseFloat(document.getElementById('hours').value),
+                financial_stress: parseInt(document.getElementById('stress').value)
+            };
+
+            let result;
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+                const response = await fetch('https://student-depression-predictor-vtv0.onrender.com/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) throw new Error("API error");
+                result = await response.json();
+            } catch (err) {
+                console.log("Using instant local model calculation fallback.");
+                result = computeLocalPrediction(payload);
+            }
