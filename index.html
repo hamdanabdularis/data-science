@@ -158,12 +158,13 @@
                         <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight" id="resultTitle">Ready for Assessment</h3>
                         <p class="text-xs text-slate-400 leading-relaxed" id="resultDescription">Click 'Run Prediction' to evaluate student risk against the Random Forest Decision Model.</p>
                     </div>
-                    <div class="relative flex flex-col items-center justify-center shrink-0">
-                        <svg class="w-28 h-28 sm:w-32 sm:h-32">
-                            <circle class="text-slate-800" stroke-width="8" stroke="currentColor" fill="transparent" r="52" cx="56" cy="56" class="sm:cx-64 sm:cy-64"/>
-                            <circle id="progressCircle" class="progress-ring__circle text-indigo-500" stroke-width="8" stroke-dasharray="326.72" stroke-dashoffset="326.72" stroke-linecap="round" stroke="currentColor" fill="transparent" r="52" cx="56" cy="56" class="sm:cx-64 sm:cy-64"/>
+                    <!-- FIXED SVG RING CONTAINER -->
+                    <div class="relative w-32 h-32 flex items-center justify-center shrink-0">
+                        <svg class="w-32 h-32 overflow-visible">
+                            <circle class="text-slate-800" stroke-width="8" stroke="currentColor" fill="transparent" r="52" cx="64" cy="64"/>
+                            <circle id="progressCircle" class="progress-ring__circle text-indigo-500" stroke-width="8" stroke-dasharray="326.72" stroke-dashoffset="326.72" stroke-linecap="round" stroke="currentColor" fill="transparent" r="52" cx="64" cy="64"/>
                         </svg>
-                        <div class="absolute flex flex-col items-center justify-center text-center">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
                             <span class="text-xl sm:text-2xl font-extrabold text-white font-mono" id="probPercent">0%</span>
                             <span class="text-[9px] sm:text-[10px] text-slate-400 uppercase tracking-wider font-medium">Risk Score</span>
                         </div>
